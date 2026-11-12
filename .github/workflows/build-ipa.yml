@@ -9,15 +9,16 @@ on:
 
 jobs:
   build-ipa:
-    runs-on: macos-14
+    runs-on: macos-latest
 
     steps:
       - name: Checkout Source Code
         uses: actions/checkout@v4
 
-      - name: Select Xcode 15.4 / 16.0
+      - name: Select Xcode
         run: |
-          sudo xcode-select -s /Applications/Xcode_15.4.app || sudo xcode-select -s /Applications/Xcode.app
+          DEVELOPER_DIR=$(xcode-select -p)
+          echo "Current Xcode path: $DEVELOPER_DIR"
           xcodebuild -version
 
       - name: Build Archive (Skip Code Signing)
