@@ -1,0 +1,340 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		110001 /* MochyApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 110002 /* MochyApp.swift */; };
+		110003 /* Track.swift in Sources */ = {isa = PBXBuildFile; fileRef = 110004 /* Track.swift */; };
+		110005 /* LyricsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 110006 /* LyricsManager.swift */; };
+		110007 /* InnerTubeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 110008 /* InnerTubeService.swift */; };
+		110009 /* PlaybackManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 110010 /* PlaybackManager.swift */; };
+		110011 /* MochyTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 110012 /* MochyTheme.swift */; };
+		110013 /* FullPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 110014 /* FullPlayerView.swift */; };
+		110015 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 110016 /* HomeView.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		110017 /* Mochy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Mochy.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		110018 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		110002 /* MochyApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MochyApp.swift; sourceTree = "<group>"; };
+		110004 /* Track.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Track.swift; sourceTree = "<group>"; };
+		110006 /* LyricsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LyricsManager.swift; sourceTree = "<group>"; };
+		110008 /* InnerTubeService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InnerTubeService.swift; sourceTree = "<group>"; };
+		110010 /* PlaybackManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaybackManager.swift; sourceTree = "<group>"; };
+		110012 /* MochyTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MochyTheme.swift; sourceTree = "<group>"; };
+		110014 /* FullPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullPlayerView.swift; sourceTree = "<group>"; };
+		110016 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		110019 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		110020 = {
+			isa = PBXGroup;
+			children = (
+				110021 /* Mochy */,
+				110022 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		110021 /* Mochy */ = {
+			isa = PBXGroup;
+			children = (
+				110018 /* Info.plist */,
+				110023 /* App */,
+				110024 /* Core */,
+				110025 /* UI */,
+			);
+			path = Mochy;
+			sourceTree = "<group>";
+		};
+		110022 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				110017 /* Mochy.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		110023 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				110002 /* MochyApp.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		110024 /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				110026 /* Audio */,
+				110027 /* Lyrics */,
+				110028 /* Models */,
+				110029 /* Network */,
+			);
+			path = Core;
+			sourceTree = "<group>";
+		};
+		110025 /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				110030 /* Screens */,
+				110031 /* Theme */,
+			);
+			path = UI;
+			sourceTree = "<group>";
+		};
+		110026 /* Audio */ = {
+			isa = PBXGroup;
+			children = (
+				110010 /* PlaybackManager.swift */,
+			);
+			path = Audio;
+			sourceTree = "<group>";
+		};
+		110027 /* Lyrics */ = {
+			isa = PBXGroup;
+			children = (
+				110006 /* LyricsManager.swift */,
+			);
+			path = Lyrics;
+			sourceTree = "<group>";
+		};
+		110028 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				110004 /* Track.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		110029 /* Network */ = {
+			isa = PBXGroup;
+			children = (
+				110008 /* InnerTubeService.swift */,
+			);
+			path = Network;
+			sourceTree = "<group>";
+		};
+		110030 /* Screens */ = {
+			isa = PBXGroup;
+			children = (
+				110014 /* FullPlayerView.swift */,
+				110016 /* HomeView.swift */,
+			);
+			path = Screens;
+			sourceTree = "<group>";
+		};
+		110031 /* Theme */ = {
+			isa = PBXGroup;
+			children = (
+				110012 /* MochyTheme.swift */,
+			);
+			path = Theme;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		110032 /* Mochy */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 110033 /* Build configuration list for PBXNativeTarget "Mochy" */;
+			buildPhases = (
+				110034 /* Sources */,
+				110019 /* Frameworks */,
+				110035 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Mochy;
+			productName = Mochy;
+			productReference = 110017 /* Mochy.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		110036 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1540;
+				LastUpgradeCheck = 1540;
+			};
+			buildConfigurationList = 110037 /* Build configuration list for PBXProject "Mochy" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 110020;
+			productRefGroup = 110022 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				110032 /* Mochy */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		110035 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		110034 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				110001 /* MochyApp.swift in Sources */,
+				110003 /* Track.swift in Sources */,
+				110005 /* LyricsManager.swift in Sources */,
+				110007 /* InnerTubeService.swift in Sources */,
+				110009 /* PlaybackManager.swift in Sources */,
+				110011 /* MochyTheme.swift in Sources */,
+				110013 /* FullPlayerView.swift in Sources */,
+				110015 /* HomeView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		110038 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		110039 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		110040 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = Mochy/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.lo.mochymusic;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		110041 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = Mochy/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.lo.mochymusic;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		110037 /* Build configuration list for PBXProject "Mochy" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				110038 /* Debug */,
+				110039 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		110033 /* Build configuration list for PBXNativeTarget "Mochy" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				110040 /* Debug */,
+				110041 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+	};
+	rootObject = 110036 /* Project object */;
+}
