@@ -1,169 +1,105 @@
 import SwiftUI
+import UIKit
 
-public struct FullPlayerView: View {
-    @ObservedObject var playback = PlaybackManager.shared
-    @Environment(\.dismiss) var dismiss
+struct FullPlayerView: View {
+    @EnvironmentObject private var playback: PlaybackManager
+    @Environment(\.dismiss) private var dismiss
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @State private var showLyrics = false
-
-    public init() {}
-
-    public var body: some View {
+    @State private var mode = "Player"
+    @State private var scrub: Double?
+    var body: some View {
         ZStack {
             MochyTheme.background.ignoresSafeArea()
-
-            // Dynamic Mesh/Blur Background
-            if let url = playback.currentTrack?.thumbnailUrl {
-                AsyncImage(url: url) { phase in
-                    if let image = phase.image {
-                        image.resizable()
-                            .aspectRatio(contentMode: .fill)
-                            .blur(radius: 60)
-                            .opacity(0.35)
-                            .ignoresSafeArea()
-                    }
-                }
-            }
-
-            VStack(spacing: 24) {
-                // Top Bar
-                HStack {
-                    Button(action: { dismiss() }) {
-                        Image(systemName: "chevron.down")
-                            .font(.system(size: 20, weight: .bold))
-                            .foregroundColor(MochyTheme.textPrimary)
-                    }
-                    Spacer()
-                    Text("NOW PLAYING")
-                        .font(.system(size: 13, weight: .semibold))
-                        .tracking(2)
-                        .foregroundColor(MochyTheme.textSecondary)
-                    Spacer()
-                    Button(action: { withAnimation { showLyrics.toggle() } }) {
-                        Image(systemName: showLyrics ? "music.note.list" : "quote.bubble.fill")
-                            .font(.system(size: 18))
-                            .foregroundColor(showLyrics ? MochyTheme.accent : MochyTheme.textPrimary)
-                    }
-                }
-                .padding(.horizontal)
-
-                Spacer()
-
-                if showLyrics {
-                    // Synced Lyrics View
-                    ScrollViewReader { proxy in
-                        ScrollView(showsIndicators: false) {
-                            VStack(alignment: .leading, spacing: 20) {
-                                ForEach(Array(playback.lyrics.enumerated()), id: \.element.id) { index, line in
-                                    Text(line.text)
-                                        .font(.system(size: 22, weight: playback.currentLyricIndex == index ? .bold : .medium))
-                                        .foregroundColor(playback.currentLyricIndex == index ? MochyTheme.textPrimary : MochyTheme.textSecondary.opacity(0.5))
-                                        .scaleEffect(playback.currentLyricIndex == index ? 1.05 : 1.0)
-                                        .animation(.spring(response: 0.3), value: playback.currentLyricIndex)
-                                        .id(index)
-                                        .onTapGesture {
-                                            playback.seek(to: line.timestamp)
-                                        }
-                                }
-                            }
-                            .padding()
-                        }
-                        .onChange(of: playback.currentLyricIndex) { newIndex in
-                            withAnimation {
-                                proxy.scrollTo(newIndex, anchor: .center)
-                            }
-                        }
-                    }
-                    .frame(maxHeight: 400)
-                } else {
-                    // Album Artwork
-                    AsyncImage(url: playback.currentTrack?.thumbnailUrl) { phase in
-                        if let image = phase.image {
-                            image.resizable()
-                                .aspectRatio(contentMode: .fill)
-                                .frame(width: 320, height: 320)
-                                .cornerRadius(24)
-                                .shadow(color: Color.black.opacity(0.6), radius: 25, x: 0, y: 15)
-                        } else {
-                            RoundedRectangle(cornerRadius: 24)
-                                .fill(MochyTheme.surface)
-                                .frame(width: 320, height: 320)
-                        }
-                    }
-                }
-
-                Spacer()
-
-                // Track Info
-                VStack(spacing: 6) {
-                    Text(playback.currentTrack?.title ?? "No Song Playing")
-                        .font(.system(size: 22, weight: .bold))
-                        .foregroundColor(MochyTheme.textPrimary)
-                        .lineLimit(1)
-
-                    Text(playback.currentTrack?.artist ?? "Mochy Music")
-                        .font(.system(size: 16))
-                        .foregroundColor(MochyTheme.textSecondary)
-                        .lineLimit(1)
-                }
-                .padding(.horizontal)
-
-                // Progress Bar
-                VStack(spacing: 8) {
-                    Slider(
-                        value: Binding(
-                            get: { playback.currentTime },
-                            set: { playback.seek(to: $0) }
-                        ),
-                        in: 0...max(playback.duration, 1.0)
-                    )
-                    .accentColor(MochyTheme.accent)
-
+            Artwork(url: playback.track?.artworkURL).blur(radius: 65).opacity(0.28).ignoresSafeArea().allowsHitTesting(false)
+            ScrollView {
+                VStack(spacing: 22) {
                     HStack {
-                        Text(formatTime(playback.currentTime))
-                        Spacer()
-                        Text(formatTime(playback.duration))
+                        Button { dismiss() } label: { Image(systemName: "chevron.down").padding(10) }.accessibilityLabel("Close player")
+                        Spacer(); Text("NOW PLAYING").font(.caption.bold()).tracking(3); Spacer()
+                        Button { showLyrics.toggle() } label: { Image(systemName: "quote.bubble").padding(10) }.accessibilityLabel("Toggle lyrics")
                     }
-                    .font(.caption)
-                    .foregroundColor(MochyTheme.textSecondary)
-                }
-                .padding(.horizontal, 28)
-
-                // Control Buttons
-                HStack(spacing: 48) {
-                    Button(action: {}) {
-                        Image(systemName: "backward.fill")
-                            .font(.system(size: 28))
-                            .foregroundColor(MochyTheme.textPrimary)
+                    Picker("Player mode", selection: $mode) {
+                        Text("Player").tag("Player"); Text("iPod").tag("iPod"); Text("Bedside").tag("Bedside")
+                    }.pickerStyle(.segmented)
+                    if let error = playback.error {
+                        VStack(spacing: 10) {
+                            Text(error).font(.callout).multilineTextAlignment(.center)
+                            Button("Retry playback") { playback.retry() }
+                        }.padding().mochyGlass()
                     }
-
-                    Button(action: { playback.togglePlayPause() }) {
-                        ZStack {
-                            Circle()
-                                .fill(MochyTheme.accent)
-                                .frame(width: 72, height: 72)
-                                .shadow(color: MochyTheme.accent.opacity(0.4), radius: 12)
-
-                            Image(systemName: playback.isPlaying ? "pause.fill" : "play.fill")
-                                .font(.system(size: 30))
-                                .foregroundColor(.white)
-                                .offset(x: playback.isPlaying ? 0 : 2)
+                    if mode == "iPod" { IPodPlayerView() }
+                    else if mode == "Bedside" { BedsideClockView() }
+                    else {
+                        if showLyrics { lyricsView.frame(height: 320) }
+                        else {
+                            Artwork(url: playback.track?.artworkURL).aspectRatio(1, contentMode: .fit)
+                                .clipShape(RoundedRectangle(cornerRadius: 28))
+                                .shadow(color: .black.opacity(0.4), radius: 25, y: 15)
+                                .scaleEffect(playback.isPlaying ? 1 : 0.94)
+                                .animation(reduceMotion ? nil : .spring(duration: 0.5), value: playback.isPlaying)
                         }
+                        VStack(spacing: 6) {
+                            Text(playback.track?.title ?? "Nothing playing").font(.title2.bold()).multilineTextAlignment(.center)
+                            Text(playback.track?.artist ?? "").foregroundStyle(MochyTheme.secondary)
+                        }
+                        VStack {
+                            Slider(value: Binding(get: { scrub ?? playback.time }, set: { scrub = $0 }), in: 0...max(1, playback.duration), onEditingChanged: { editing in
+                                if !editing, let scrub { playback.seek(scrub); self.scrub = nil }
+                            }).disabled(playback.duration <= 0).accessibilityLabel("Playback position")
+                            HStack { Text(playbackTime(scrub ?? playback.time)); Spacer(); Text(playbackTime(playback.duration)) }.font(.caption.monospacedDigit()).foregroundStyle(MochyTheme.secondary)
+                        }
+                        HStack(spacing: 26) {
+                            Button { playback.shuffle.toggle() } label: { Image(systemName: "shuffle").foregroundStyle(playback.shuffle ? MochyTheme.accent : .white) }.accessibilityLabel("Shuffle").accessibilityValue(playback.shuffle ? "On" : "Off")
+                            Button { playback.previous() } label: { Image(systemName: "backward.end.fill").font(.title) }.accessibilityLabel("Previous song")
+                            Button { playback.toggle() } label: {
+                                ZStack { Circle().fill(MochyTheme.accent).frame(width: 76, height: 76)
+                                    if playback.isLoading { ProgressView().tint(.white) } else { Image(systemName: playback.isPlaying ? "pause.fill" : "play.fill").font(.title) }
+                                }
+                            }.accessibilityLabel(playback.isPlaying ? "Pause" : "Play")
+                            Button { playback.next() } label: { Image(systemName: "forward.end.fill").font(.title) }.accessibilityLabel("Next song")
+                            Button { playback.repeatTrack.toggle() } label: { Image(systemName: "repeat.1").foregroundStyle(playback.repeatTrack ? MochyTheme.accent : .white) }.accessibilityLabel("Repeat song").accessibilityValue(playback.repeatTrack ? "On" : "Off")
+                        }.buttonStyle(.plain)
                     }
-
-                    Button(action: {}) {
-                        Image(systemName: "forward.fill")
-                            .font(.system(size: 28))
-                            .foregroundColor(MochyTheme.textPrimary)
-                    }
-                }
-                .padding(.bottom, 36)
+                }.padding(24).frame(maxWidth: 580).frame(maxWidth: .infinity)
             }
+        }.foregroundStyle(.white)
+            .onChange(of: playback.track?.id) { _, _ in scrub = nil }
+    }
+    private var lyricsView: some View {
+        ScrollViewReader { proxy in
+            ScrollView {
+                if playback.lines.isEmpty { Text(playback.plainLyrics).font(.title3).padding() }
+                else {
+                    LazyVStack(alignment: .leading, spacing: 24) {
+                        ForEach(playback.lines) { line in
+                            Button { playback.seek(line.timestamp) } label: {
+                                Text(line.text.isEmpty ? "♪" : line.text).font(.title2.weight(playback.activeLyricID == line.id ? .bold : .medium))
+                                    .foregroundStyle(playback.activeLyricID == line.id ? .white : .white.opacity(0.35))
+                                    .scaleEffect(playback.activeLyricID == line.id ? 1 : 0.96, anchor: .leading)
+                                    .multilineTextAlignment(.leading).frame(maxWidth: .infinity, alignment: .leading)
+                            }.buttonStyle(.plain).id(line.id)
+                        }
+                    }.padding(.vertical, 100).padding(.horizontal, 8)
+                }
+            }.onChange(of: playback.activeLyricID) { _, id in
+                withAnimation(reduceMotion ? nil : .easeInOut(duration: 0.3)) { if let id { proxy.scrollTo(id, anchor: .center) } }
+            }.onAppear { if let id = playback.activeLyricID { proxy.scrollTo(id, anchor: .center) } }
         }
     }
+}
 
-    private func formatTime(_ seconds: Double) -> String {
-        let m = Int(seconds) / 60
-        let s = Int(seconds) % 60
-        return String(format: "%d:%02d", m, s)
+struct BedsideClockView: View {
+    @EnvironmentObject private var playback: PlaybackManager
+    var body: some View {
+        VStack(spacing: 32) {
+            TimelineView(.periodic(from: .now, by: 1)) { context in
+                Text(context.date, style: .time).font(.system(size: 64, weight: .ultraLight, design: .rounded)).minimumScaleFactor(0.5).monospacedDigit()
+            }
+            Text(playback.track?.title ?? "Mochy Music").font(.title3).multilineTextAlignment(.center)
+            Button { playback.toggle() } label: { Image(systemName: playback.isPlaying ? "pause.circle" : "play.circle").font(.system(size: 56)) }.accessibilityLabel("Toggle playback")
+        }.frame(maxWidth: .infinity).padding(.vertical, 80)
+            .onAppear { UIApplication.shared.isIdleTimerDisabled = true }
+            .onDisappear { UIApplication.shared.isIdleTimerDisabled = false }
     }
 }
